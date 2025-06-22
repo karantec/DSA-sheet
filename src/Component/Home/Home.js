@@ -1,438 +1,483 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
+  Shield,
+  Code,
+  Play,
+  CheckCircle,
+  Eye,
+  Monitor,
+  Lock,
+  ArrowRight,
+  Sparkles,
+  Terminal,
+  Users,
+  Trophy,
+  Brain,
   ChevronLeft,
   ChevronRight,
-  Instagram,
-  Facebook,
-  Twitter,
-  Menu,
+  Award,
+  Zap,
+  Globe,
 } from "lucide-react";
 
-export default function EnhancedPremiumCarousel() {
-  const [slides, setSlides] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [transitioning, setTransitioning] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [touchStart, setTouchStart] = useState(null);
-  const [touchEnd, setTouchEnd] = useState(null);
-  const [showSocialMenu, setShowSocialMenu] = useState(false);
+const HeroCarousel = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentCodeIndex, setCurrentCodeIndex] = useState(0);
+  const [typingText, setTypingText] = useState("");
+  const [currentLine, setCurrentLine] = useState(0);
+  const [autoPlay, setAutoPlay] = useState(true);
 
-  const carouselRef = useRef(null);
+  // Carousel slides data
+  const slides = [
+    {
+      id: 1,
+      badge: "Next-Gen Coding Platform",
+      title: ["Cheat-Proof", "Coding", "Contests"],
+      titleColors: [
+        "from-white via-blue-100 to-indigo-200",
+        "text-white",
+        "from-indigo-400 to-purple-400",
+      ],
+      subtitle:
+        "Host secure coding competitions and conduct company assessments with our advanced AI-powered anti-cheating technology.",
+      primaryButton: "Start Coding Now",
+      secondaryButton: "Learn About Security",
+      features: [
+        { icon: Shield, text: "AI-Powered Proctoring", color: "text-blue-400" },
+        { icon: Eye, text: "Live Monitoring", color: "text-green-400" },
+        { icon: Monitor, text: "Screen Recording", color: "text-purple-400" },
+        { icon: Lock, text: "Secure Environment", color: "text-orange-400" },
+      ],
+      stats: [
+        { number: "99.9%", label: "Cheat Detection Rate", icon: Shield },
+        { number: "10K+", label: "Secure Assessments", icon: CheckCircle },
+        { number: "500+", label: "Companies Trust Us", icon: Code },
+        { number: "24/7", label: "Monitoring", icon: Eye },
+      ],
+      bgGradient: "from-gray-900 via-blue-900 to-indigo-900",
+    },
+    {
+      id: 2,
+      badge: "Enterprise Solutions",
+      title: ["Scale Your", "Technical", "Hiring"],
+      titleColors: [
+        "from-white via-green-100 to-emerald-200",
+        "text-white",
+        "from-emerald-400 to-teal-400",
+      ],
+      subtitle:
+        "Streamline your recruitment process with comprehensive coding assessments, real-time analytics, and detailed candidate insights.",
+      primaryButton: "Get Enterprise Demo",
+      secondaryButton: "View Pricing",
+      features: [
+        { icon: Users, text: "Team Collaboration", color: "text-emerald-400" },
+        { icon: Brain, text: "AI-Powered Insights", color: "text-blue-400" },
+        { icon: Trophy, text: "Custom Challenges", color: "text-yellow-400" },
+        { icon: Award, text: "Skill Assessment", color: "text-purple-400" },
+      ],
+      stats: [
+        { number: "50K+", label: "Developers Assessed", icon: Users },
+        { number: "200+", label: "Enterprise Clients", icon: Trophy },
+        { number: "95%", label: "Accuracy Rate", icon: Brain },
+        { number: "60%", label: "Faster Hiring", icon: Zap },
+      ],
+      bgGradient: "from-gray-900 via-emerald-900 to-teal-900",
+    },
+    {
+      id: 3,
+      badge: "Global Community",
+      title: ["Join The", "Coding", "Revolution"],
+      titleColors: [
+        "from-white via-purple-100 to-pink-200",
+        "text-white",
+        "from-purple-400 to-pink-400",
+      ],
+      subtitle:
+        "Connect with developers worldwide, participate in global competitions, and showcase your skills on our secure platform.",
+      primaryButton: "Join Community",
+      secondaryButton: "Explore Contests",
+      features: [
+        { icon: Globe, text: "Global Competitions", color: "text-purple-400" },
+        { icon: Trophy, text: "Leaderboards", color: "text-yellow-400" },
+        { icon: Users, text: "Community Support", color: "text-blue-400" },
+        { icon: Award, text: "Skill Badges", color: "text-green-400" },
+      ],
+      stats: [
+        { number: "100K+", label: "Active Developers", icon: Users },
+        { number: "1M+", label: "Code Submissions", icon: Code },
+        { number: "50+", label: "Countries", icon: Globe },
+        { number: "24/7", label: "Global Support", icon: Shield },
+      ],
+      bgGradient: "from-gray-900 via-purple-900 to-pink-900",
+    },
+  ];
 
-  // Minimum swipe distance (in px)
-  const minSwipeDistance = 50;
+  // Code snippets for different programming languages
+  const codeSnippets = [
+    {
+      language: "Python",
+      title: "Two Sum Problem",
+      code: [
+        "def two_sum(nums, target):",
+        "    hash_map = {}",
+        "    for i, num in enumerate(nums):",
+        "        complement = target - num",
+        "        if complement in hash_map:",
+        "            return [hash_map[complement], i]",
+        "        hash_map[num] = i",
+        "    return []",
+      ],
+    },
+    {
+      language: "JavaScript",
+      title: "Binary Search",
+      code: [
+        "function binarySearch(arr, target) {",
+        "    let left = 0, right = arr.length - 1;",
+        "    while (left <= right) {",
+        "        const mid = Math.floor((left + right) / 2);",
+        "        if (arr[mid] === target) return mid;",
+        "        if (arr[mid] < target) left = mid + 1;",
+        "        else right = mid - 1;",
+        "    }",
+        "    return -1;",
+        "}",
+      ],
+    },
+    {
+      language: "Java",
+      title: "Quick Sort",
+      code: [
+        "public static void quickSort(int[] arr, int low, int high) {",
+        "    if (low < high) {",
+        "        int pi = partition(arr, low, high);",
+        "        quickSort(arr, low, pi - 1);",
+        "        quickSort(arr, pi + 1, high);",
+        "    }",
+        "}",
+        "",
+        "private static int partition(int[] arr, int low, int high) {",
+        "    // Implementation here...",
+        "}",
+      ],
+    },
+  ];
 
-  // Fetch data from the carousel API
+  const currentSlideData = slides[currentSlide];
+
+  // Event handlers
+  const handleStartCoding = () => {
+    console.log("Navigating to coding contest...");
+  };
+
+  const handleLearnMore = () => {
+    console.log("Showing more information...");
+  };
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  };
+
+  const goToSlide = (index) => {
+    setCurrentSlide(index);
+  };
+
+  // Auto-play carousel
   useEffect(() => {
-    const fetchSlides = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(
-          "https://tesodtechnologyfinal.onrender.com/crousel"
-        );
-        const data = await response.json();
-        setSlides(data);
-      } catch (error) {
-        console.error("Error fetching carousel data:", error);
-      } finally {
-        setLoading(false);
-        // Trigger animation after data is loaded
-        setTimeout(() => setIsLoaded(true), 100);
-      }
-    };
-
-    fetchSlides();
-  }, []);
-
-  // Auto-play functionality with pause on hover
-  useEffect(() => {
-    if (slides.length === 0) return;
+    if (!autoPlay) return;
 
     const interval = setInterval(() => {
-      if (!transitioning) {
-        handleNext();
-      }
-    }, 6000);
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, 8000); // Change slide every 8 seconds
 
     return () => clearInterval(interval);
-  }, [currentIndex, slides.length, transitioning]);
+  }, [autoPlay]);
 
-  const handleTransition = (callback) => {
-    if (transitioning) return;
+  // Typing animation effect
+  useEffect(() => {
+    const currentSnippet = codeSnippets[currentCodeIndex];
+    const currentCodeLine = currentSnippet.code[currentLine] || "";
 
-    setTransitioning(true);
-    callback();
-
-    // Reset transitioning state after animation completes
-    setTimeout(() => {
-      setTransitioning(false);
-    }, 700);
-  };
-
-  const handleNext = () => {
-    handleTransition(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === slides.length - 1 ? 0 : prevIndex + 1
-      );
-    });
-  };
-
-  const handlePrev = () => {
-    handleTransition(() => {
-      setCurrentIndex((prevIndex) =>
-        prevIndex === 0 ? slides.length - 1 : prevIndex - 1
-      );
-    });
-  };
-
-  const handleGoToSlide = (index) => {
-    if (index === currentIndex) return;
-
-    handleTransition(() => {
-      setCurrentIndex(index);
-    });
-  };
-
-  // Touch handlers for swipe functionality
-  const onTouchStart = (e) => {
-    setTouchEnd(null);
-    setTouchStart(e.targetTouches[0].clientX);
-  };
-
-  const onTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    if (!touchStart || !touchEnd) return;
-
-    const distance = touchStart - touchEnd;
-    const isSwipe = Math.abs(distance) > minSwipeDistance;
-
-    if (isSwipe) {
-      if (distance > 0) {
-        // Swipe left - go next
-        handleNext();
-      } else {
-        // Swipe right - go prev
-        handlePrev();
-      }
+    if (typingText.length < currentCodeLine.length) {
+      const timer = setTimeout(() => {
+        setTypingText(currentCodeLine.slice(0, typingText.length + 1));
+      }, 50 + Math.random() * 50);
+      return () => clearTimeout(timer);
+    } else if (currentLine < currentSnippet.code.length - 1) {
+      const timer = setTimeout(() => {
+        setCurrentLine((prev) => prev + 1);
+        setTypingText("");
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      const timer = setTimeout(() => {
+        setCurrentCodeIndex((prev) => (prev + 1) % codeSnippets.length);
+        setCurrentLine(0);
+        setTypingText("");
+      }, 3000);
+      return () => clearTimeout(timer);
     }
+  }, [typingText, currentLine, currentCodeIndex]);
 
-    // Reset values
-    setTouchStart(null);
-    setTouchEnd(null);
-  };
-
-  // Animation classes based on active slide
-  const getAnimationClass = (index) => {
-    return index === currentIndex && isLoaded
-      ? "opacity-100 transform translate-y-0"
-      : "opacity-0 transform translate-y-8";
-  };
-
-  const toggleSocialMenu = () => {
-    setShowSocialMenu(!showSocialMenu);
-  };
-
-  if (loading) {
-    return (
-      <div className="w-full h-screen flex items-center justify-center bg-gray-900">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-pink-500"></div>
-      </div>
-    );
-  }
+  const currentSnippet = codeSnippets[currentCodeIndex];
 
   return (
-    <div className="relative w-full h-[80vh] overflow-hidden bg-black">
-      {/* Slides container with touch events */}
-      <div
-        ref={carouselRef}
-        className="relative w-full h-full"
-        onTouchStart={onTouchStart}
-        onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
-      >
-        {slides.map((slide, index) => {
-          const isActive = index === currentIndex;
-          const isPrev =
-            index === currentIndex - 1 ||
-            (currentIndex === 0 && index === slides.length - 1);
-          const isNext =
-            index === currentIndex + 1 ||
-            (currentIndex === slides.length - 1 && index === 0);
-
-          return (
+    <div
+      className={`relative min-h-screen bg-gradient-to-br ${currentSlideData.bgGradient} overflow-hidden transition-all duration-1000`}
+    >
+      {/* Animated Background Pattern */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
+        <div className="absolute top-0 left-0 w-full h-full">
+          {[...Array(20)].map((_, i) => (
             <div
-              key={slide._id || index}
-              className={`absolute inset-0 transition-all duration-700 ease-in-out ${
-                isActive
-                  ? "opacity-100 translate-x-0 z-10"
-                  : isPrev
-                  ? "opacity-0 -translate-x-full z-0"
-                  : isNext
-                  ? "opacity-0 translate-x-full z-0"
-                  : "opacity-0 translate-x-full z-0"
-              }`}
-            >
-              {/* Image with zoom effect */}
-              <div
-                className="relative w-full h-full transition-transform duration-10000 ease-linear"
-                style={{ transform: isActive ? "scale(1)" : "scale(1.05)" }}
-              >
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-cover object-center"
-                />
-                {/* Gradient overlay - combining both styles */}
-                <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-70"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-50"></div>
+              key={i}
+              className="absolute bg-white bg-opacity-5 rounded-full animate-pulse"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                width: `${Math.random() * 4 + 2}px`,
+                height: `${Math.random() * 4 + 2}px`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${Math.random() * 3 + 2}s`,
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Navigation Arrows */}
+      <button
+        onClick={prevSlide}
+        onMouseEnter={() => setAutoPlay(false)}
+        onMouseLeave={() => setAutoPlay(true)}
+        className="absolute left-6 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-10 backdrop-blur-sm hover:bg-opacity-20 text-white p-3 rounded-full transition-all duration-300 group"
+      >
+        <ChevronLeft className="h-6 w-6 group-hover:scale-110 transition-transform" />
+      </button>
+
+      <button
+        onClick={nextSlide}
+        onMouseEnter={() => setAutoPlay(false)}
+        onMouseLeave={() => setAutoPlay(true)}
+        className="absolute right-6 top-1/2 transform -translate-y-1/2 z-20 bg-white bg-opacity-10 backdrop-blur-sm hover:bg-opacity-20 text-white p-3 rounded-full transition-all duration-300 group"
+      >
+        <ChevronRight className="h-6 w-6 group-hover:scale-110 transition-transform" />
+      </button>
+
+      {/* Slide Indicators */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 flex space-x-3">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => goToSlide(index)}
+            onMouseEnter={() => setAutoPlay(false)}
+            onMouseLeave={() => setAutoPlay(true)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              index === currentSlide
+                ? "bg-white scale-125"
+                : "bg-white bg-opacity-50 hover:bg-opacity-75"
+            }`}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+          {/* Left Content */}
+          <div className="text-white space-y-8">
+            {/* Main Heading */}
+            <div className="space-y-6">
+              <div className="flex items-center space-x-3 text-indigo-300">
+                <Sparkles className="h-6 w-6 animate-pulse" />
+                <span className="text-lg font-semibold tracking-wide">
+                  {currentSlideData.badge}
+                </span>
               </div>
 
-              {/* Content container with animation - positioned for mobile and desktop */}
-              <div className="absolute inset-0 flex items-center">
-                <div className="container mx-auto px-4 sm:px-6 lg:px-20">
-                  <div className="max-w-xl text-white text-left mt-8 sm:mt-0">
-                    {/* Subtitle with fade-in animation */}
-                    <div
-                      className={`transition-all duration-700 delay-300 ease-out ${getAnimationClass(
-                        index
-                      )}`}
+              <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
+                {currentSlideData.title.map((line, index) => (
+                  <React.Fragment key={index}>
+                    <span
+                      className={`bg-gradient-to-r ${currentSlideData.titleColors[index]} bg-clip-text text-transparent`}
                     >
-                      <h6 className="text-xs sm:text-sm md:text-base uppercase tracking-widest mb-2 sm:mb-3 inline-block bg-blue-600 bg-opacity-80 px-2 py-1 sm:px-3 rounded">
-                        {slide.subtitle || "Featured"}
-                      </h6>
+                      {line}
+                    </span>
+                    {index < currentSlideData.title.length - 1 && <br />}
+                  </React.Fragment>
+                ))}
+              </h1>
+
+              <p className="text-xl lg:text-2xl text-blue-100 leading-relaxed max-w-2xl">
+                {currentSlideData.subtitle}
+              </p>
+            </div>
+
+            {/* Features */}
+            <div className="grid grid-cols-2 gap-4">
+              {currentSlideData.features.map((feature, index) => (
+                <div
+                  key={index}
+                  className="flex items-center space-x-3 bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-4 border border-white border-opacity-20 transform hover:scale-105 transition-all duration-300"
+                >
+                  <feature.icon className={`h-6 w-6 ${feature.color}`} />
+                  <span className="text-sm font-medium text-white">
+                    {feature.text}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 pt-6">
+              <button
+                onClick={handleStartCoding}
+                className="group relative bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-indigo-700 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              >
+                <div className="flex items-center justify-center space-x-3">
+                  <Play className="h-6 w-6 group-hover:animate-pulse" />
+                  <span>{currentSlideData.primaryButton}</span>
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity"></div>
+              </button>
+
+              <button
+                onClick={handleLearnMore}
+                className="group bg-white bg-opacity-10 backdrop-blur-sm text-white px-8 py-4 rounded-xl font-semibold text-lg border border-white border-opacity-30 hover:bg-opacity-20 transition-all duration-300"
+              >
+                <div className="flex items-center justify-center space-x-3">
+                  <Shield className="h-6 w-6" />
+                  <span>{currentSlideData.secondaryButton}</span>
+                </div>
+              </button>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
+              {currentSlideData.stats.map((stat, index) => (
+                <div
+                  key={index}
+                  className="text-center transform hover:scale-110 transition-all duration-300"
+                >
+                  <div className="flex justify-center mb-2">
+                    <stat.icon className="h-8 w-8 text-indigo-400" />
+                  </div>
+                  <div className="text-2xl lg:text-3xl font-bold text-white mb-1">
+                    {stat.number}
+                  </div>
+                  <div className="text-sm text-blue-200">{stat.label}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right Content - Code Editor Mockup */}
+          <div className="relative">
+            {/* Code Editor Window */}
+            <div className="bg-gray-900 rounded-2xl shadow-2xl border border-gray-700 overflow-hidden transform hover:scale-105 transition-all duration-300">
+              {/* Editor Header */}
+              <div className="bg-gray-800 px-6 py-4 border-b border-gray-700">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex space-x-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                     </div>
-
-                    {/* Title with fade-in animation and responsive text */}
-                    <div
-                      className={`transition-all duration-700 delay-500 ease-out ${getAnimationClass(
-                        index
-                      )}`}
-                    >
-                      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-4 tracking-tight line-clamp-2 sm:line-clamp-none">
-                        {slide.title}
-                      </h1>
+                    <div className="flex items-center space-x-2">
+                      <Terminal className="h-4 w-4 text-gray-400" />
+                      <span className="text-gray-300 text-sm font-medium">
+                        {currentSnippet.title} - {currentSnippet.language}
+                      </span>
                     </div>
-
-                    {/* Divider with animation */}
-                    <div
-                      className={`transition-all duration-700 delay-700 ease-out ${getAnimationClass(
-                        index
-                      )}`}
-                    >
-                      <div className="w-16 sm:w-24 h-1 bg-blue-500 mb-3 sm:mb-6"></div>
-                    </div>
-
-                    {/* Description with fade-in animation - hide on smaller screens */}
-                    <div
-                      className={`transition-all duration-700 delay-900 ease-out ${getAnimationClass(
-                        index
-                      )}`}
-                    >
-                      <p className="text-base sm:text-lg md:text-xl max-w-3xl leading-relaxed mb-4 sm:mb-8 line-clamp-2 sm:line-clamp-3 md:line-clamp-none">
-                        {slide.description}
-                      </p>
-                    </div>
-
-                    {/* Buttons with animation - stack on mobile with better spacing */}
-                    <div
-                      className={`transition-all duration-700 delay-1100 ease-out flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 ${getAnimationClass(
-                        index
-                      )}`}
-                    >
-                      <button className="bg-blue-500 hover:bg-blue-700 text-white px-6 sm:px-8 py-3 sm:py-3 rounded-md font-medium text-xs sm:text-sm uppercase tracking-wide hover:shadow-lg transition-all w-full sm:w-auto max-w-xs">
-                        {slide.buttonText || "Learn More"}
-                      </button>
-
-                      {/* Secondary button with better spacing */}
-                      <button className="sm:ml-0 border-2 border-white hover:border-blue-400 hover:text-blue-400 text-white px-4 sm:px-6 py-3 sm:py-3 rounded-md font-medium text-xs sm:text-sm uppercase tracking-wide transition-all w-full sm:w-auto max-w-xs">
-                        Our Services
-                      </button>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-1 bg-green-600 bg-opacity-20 px-2 py-1 rounded">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="text-green-400 text-xs font-medium">
+                        Monitored
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Decorative elements - hidden on mobile */}
-              <div className="hidden lg:block absolute top-1/4 right-20 w-24 h-24 border-4 border-pink-500 opacity-20"></div>
-              <div className="hidden lg:block absolute bottom-1/4 right-40 w-16 h-16 rounded-full border-4 border-white opacity-20"></div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Navigation arrows - responsive size and position */}
-      <button
-        onClick={handlePrev}
-        className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-30 p-2 sm:p-3 md:p-4 rounded-full text-white hover:bg-opacity-60 transition-all duration-300 focus:outline-none z-20 transform hover:scale-110 md:left-8"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft size={20} />
-      </button>
-
-      <button
-        onClick={handleNext}
-        className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-30 p-2 sm:p-3 md:p-4 rounded-full text-white hover:bg-opacity-60 transition-all duration-300 focus:outline-none z-20 transform hover:scale-110 md:right-8"
-        aria-label="Next slide"
-      >
-        <ChevronRight size={20} />
-      </button>
-
-      {/* Custom indicator dots with progress bars - responsive position */}
-      <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-0 right-0 flex justify-center space-x-2 sm:space-x-4 z-20">
-        {slides.map((_, index) => {
-          const isActive = index === currentIndex;
-
-          return (
-            <button
-              key={index}
-              onClick={() => handleGoToSlide(index)}
-              className={`transition-all duration-300 h-2 sm:h-3 rounded-full ${
-                isActive
-                  ? "w-8 sm:w-12 "
-                  : "w-2 sm:w-3 bg-white bg-opacity-60 hover:bg-opacity-100"
-              }`}
-              aria-label={`Go to slide ${index + 1}`}
-            >
-              {isActive && (
-                <div className="h-full w-full relative overflow-hidden">
-                  <div className="absolute left-0 top-0 bottom-0 bg-white bg-opacity-30 w-full animate-progress origin-left"></div>
+              {/* Code Content */}
+              <div className="p-6 font-mono text-sm">
+                {/* Language indicator */}
+                <div className="flex items-center space-x-2 mb-4">
+                  <Code className="h-4 w-4 text-indigo-400" />
+                  <span className="text-indigo-400 font-semibold">
+                    {currentSnippet.language}
+                  </span>
                 </div>
-              )}
-            </button>
-          );
-        })}
-      </div>
 
-      {/* Slide counter - responsive sizing and position */}
-      <div className="absolute top-4 sm:top-6 md:top-8 right-4 sm:right-6 md:right-8 text-white font-bold z-20 bg-black bg-opacity-30 px-2 py-1 rounded-md">
-        <span className="text-xl sm:text-2xl">{currentIndex + 1}</span>
-        <span className="text-xs sm:text-sm text-white text-opacity-60 mx-1 sm:mx-2">
-          /
-        </span>
-        <span className="text-xs sm:text-sm text-white text-opacity-60">
-          {slides.length}
-        </span>
-      </div>
+                {/* Code lines */}
+                <div className="space-y-2">
+                  {currentSnippet.code.map((line, index) => (
+                    <div key={index} className="flex items-start space-x-4">
+                      <span className="text-gray-500 text-xs w-6 text-right">
+                        {index + 1}
+                      </span>
+                      <div className="flex-1">
+                        {index < currentLine ? (
+                          <span className="text-gray-300">{line}</span>
+                        ) : index === currentLine ? (
+                          <span className="text-gray-300">
+                            {typingText}
+                            <span className="bg-indigo-400 w-2 h-5 inline-block ml-1 animate-pulse"></span>
+                          </span>
+                        ) : (
+                          <span className="text-gray-600">{line}</span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
-      {/* Social media links - collapsed on mobile */}
-      <div className="hidden md:flex flex-col absolute right-6 top-1/2 transform -translate-y-1/2 z-10 space-y-4">
-        <a
-          href="#"
-          className="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 hover:bg-pink-600 rounded-full flex items-center justify-center transition duration-300"
-        >
-          <Instagram size={14} color="white" />
-        </a>
-        <a
-          href="#"
-          className="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 hover:bg-blue-600 rounded-full flex items-center justify-center transition duration-300"
-        >
-          <Facebook size={14} color="white" />
-        </a>
-        <a
-          href="#"
-          className="w-8 h-8 sm:w-10 sm:h-10 bg-white bg-opacity-20 hover:bg-blue-600 rounded-full flex items-center justify-center transition duration-300"
-        >
-          <Twitter size={14} color="white" />
-        </a>
-      </div>
+                {/* Security overlay indicators */}
+                <div className="mt-6 pt-4 border-t border-gray-700">
+                  <div className="grid grid-cols-3 gap-4 text-xs">
+                    <div className="flex items-center space-x-2 text-green-400">
+                      <Eye className="h-3 w-3" />
+                      <span>Monitored</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-blue-400">
+                      <Monitor className="h-3 w-3" />
+                      <span>Recorded</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-purple-400">
+                      <Shield className="h-3 w-3" />
+                      <span>Secured</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      {/* Mobile social menu toggle */}
-      <div className="md:hidden absolute top-4 right-16 z-20">
-        <button
-          onClick={toggleSocialMenu}
-          className="w-8 h-8 bg-black bg-opacity-40 rounded-full flex items-center justify-center"
-          aria-label="Toggle social menu"
-        >
-          <Menu size={16} color="white" />
-        </button>
+            {/* Floating Security Indicators */}
+            <div className="absolute -top-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg animate-bounce">
+              <Shield className="h-4 w-4 inline mr-2" />
+              Live Monitoring
+            </div>
 
-        {/* Mobile social popup */}
-        {showSocialMenu && (
-          <div className="absolute top-10 right-0 bg-black bg-opacity-70 p-2 rounded-lg flex space-x-2">
-            <a
-              href="#"
-              className="w-8 h-8 bg-white bg-opacity-20 hover:bg-pink-600 rounded-full flex items-center justify-center transition duration-300"
-            >
-              <Instagram size={14} color="white" />
-            </a>
-            <a
-              href="#"
-              className="w-8 h-8 bg-white bg-opacity-20 hover:bg-blue-600 rounded-full flex items-center justify-center transition duration-300"
-            >
-              <Facebook size={14} color="white" />
-            </a>
-            <a
-              href="#"
-              className="w-8 h-8 bg-white bg-opacity-20 hover:bg-blue-600 rounded-full flex items-center justify-center transition duration-300"
-            >
-              <Twitter size={14} color="white" />
-            </a>
+            <div className="absolute -bottom-4 -left-4 bg-indigo-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+              <Lock className="h-4 w-4 inline mr-2" />
+              Cheat-Proof
+            </div>
+
+            {/* Glowing effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl blur-xl opacity-20 -z-10 animate-pulse"></div>
           </div>
-        )}
-      </div>
-
-      {/* Scroll down indicator - hidden on smallest screens */}
-      <div className="hidden sm:block absolute bottom-24 sm:bottom-10 left-1/2 transform -translate-x-1/2 z-10 text-white text-center">
-        <p className="text-xs sm:text-sm mb-1 sm:mb-2 opacity-70">
-          Scroll Down
-        </p>
-        <div className="w-4 h-8 sm:w-6 sm:h-10 border-2 border-white rounded-full mx-auto flex justify-center">
-          <div className="w-1 h-2 sm:h-3 bg-white rounded-full mt-2 animate-bounce"></div>
         </div>
       </div>
-
-      {/* Global styles for animations */}
-      <style jsx global>{`
-        @keyframes progress {
-          from {
-            transform: scaleX(0);
-          }
-          to {
-            transform: scaleX(1);
-          }
-        }
-        .animate-progress {
-          animation: progress 6s linear;
-        }
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.8s ease-out forwards;
-        }
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-slideUp {
-          animation: slideUp 0.8s ease-out 0.2s forwards;
-        }
-
-        /* Optimize for mobile */
-        @media (max-width: 640px) {
-          .animate-progress {
-            animation: progress 6s linear;
-          }
-          .animate-slideUp {
-            animation: slideUp 0.6s ease-out 0.1s forwards;
-          }
-        }
-      `}</style>
     </div>
   );
-}
+};
+
+export default HeroCarousel;
