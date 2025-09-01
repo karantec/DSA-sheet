@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
+import MentorHeader from "./Component/Header";
 
 export default function App() {
   const [rows, setRows] = useState([]);
@@ -322,12 +323,6 @@ export default function App() {
             <div className="animate-spin rounded-full h-20 w-20 border-4 border-indigo-200 border-t-indigo-600 mx-auto"></div>
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-400 to-purple-500 opacity-20 animate-pulse"></div>
           </div>
-          <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3">
-            Loading DSA Training Data
-          </h2>
-          <p className="text-gray-600 text-lg">
-            Fetching student progress and results...
-          </p>
         </div>
       </div>
     );
@@ -383,129 +378,11 @@ export default function App() {
       {/* Hero Header */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20"></div>
-        <div className="relative bg-white/10 backdrop-blur-md border-b border-white/20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="text-center">
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-                🚀 DesiQNA Training Program
-              </h1>
-              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
-                Personalized DSA Training & 1-1 Mentoring Program
-              </p>
-
-              {/* Key Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
-                  <div className="text-3xl font-bold text-yellow-300 mb-2">
-                    1158+
-                  </div>
-                  <div className="text-white">Students Placed</div>
-                  <div className="text-blue-200 text-sm">20+ LPA Offers</div>
-                </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
-                  <div className="text-3xl font-bold text-green-300 mb-2">
-                    2100+
-                  </div>
-                  <div className="text-white">LeetCode Rating</div>
-                  <div className="text-blue-200 text-sm">Top 1% Worldwide</div>
-                </div>
-                <div className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 border border-white/30">
-                  <div className="text-3xl font-bold text-pink-300 mb-2">
-                    851
-                  </div>
-                  <div className="text-white">Training Hours</div>
-                  <div className="text-blue-200 text-sm">24/7 Support</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <MentorHeader />
       </div>
 
       {/* Program Features */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
-          {/* Feature 1 */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-            <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mb-6">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              Daily Live Classes
-            </h3>
-            <p className="text-gray-600 leading-relaxed">
-              Mon-Sun DSA classes with online tests, interview prep, competitive
-              programming, and doubt sessions by Kumar K Sir (SDE @ Amazon)
-            </p>
-          </div>
-
-          {/* Feature 2 */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-2xl flex items-center justify-center mb-6">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              1-1 Mentoring
-            </h3>
-            <p className="text-gray-600 leading-relaxed">
-              Personalized mentoring sessions to resolve your specific issues
-              and accelerate your growth with individual attention from expert
-              mentors
-            </p>
-          </div>
-
-          {/* Feature 3 */}
-          <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20 hover:transform hover:scale-105 transition-all duration-300">
-            <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mb-6">
-              <svg
-                className="w-8 h-8 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                ></path>
-              </svg>
-            </div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              Specialized Batches
-            </h3>
-            <p className="text-gray-600 leading-relaxed">
-              Separate cohorts for college students, freshers, working
-              professionals, and non-IT graduates with tailored curriculum for
-              each group
-            </p>
-          </div>
-        </div>
-
         {/* Student Data Section */}
         {rows.length === 0 ? (
           <div className="text-center bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-16 border border-white/20">
